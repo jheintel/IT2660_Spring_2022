@@ -1,10 +1,11 @@
 public class Test {
     public static void main(String[] args) {
         //testGraph();
-        Graphy graph = Graphy.generateRandomGraph(100, 1, 10, 1, 5);
+        Graphy graph = Graphy.generateRandomGraph(1000, 1, 100000, 1, 10);
         //graph.printGraph();
-        //graph.DFT_scanAndPrint(0);
-        graph.printShortestDistance(0, 8);
+        //graph.depthFirstTraversalScanAndPrint(0);
+        //graph.dftPrintShortestDistance(0, 8);
+        graph.bftPrintShortestDistance(0, 58765);
     }
 
     public static Graphy testGraph(){

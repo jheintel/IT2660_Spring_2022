@@ -1,13 +1,12 @@
-//import java.util.Scanner;
 import java.util.Stack;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class Graphy {
     Node vertex[];
     int edge[][];
     int max;
     int numberOfVerticies;
-    int destination = 0;
 
     public Graphy(int n){
         vertex = new Node[n];
@@ -81,7 +80,7 @@ public class Graphy {
         }
     }
 
-    public void DFT_scanAndPrint(int firstVertex){
+    public void depthFirstTraversalScanAndPrint(int firstVertex){
         int v;
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i<numberOfVerticies; i++){
@@ -103,7 +102,7 @@ public class Graphy {
             }
         }
     }
-    private boolean DFT(int src, int dest, int pred[], int dist[]){
+    private boolean depthFirstTraversal(int src, int dest[], int pred[], int dist[]){
         int v = numberOfVerticies;
 
         Stack<Integer> stack = new Stack<>();
@@ -126,9 +125,10 @@ public class Graphy {
                     vertex[column].setPushed(true);
                     dist[column] = dist[v] + 1;
                     pred[column] = v;
+                    dest[1] = dest[1] + 1;
 
-                    if(vertex[column].getValue() == dest){
-                        destination = column;
+                    if(vertex[column].getValue() == dest[0]){
+                        dest[0] = column;
                         return true;
                     }
                 }
@@ -136,16 +136,18 @@ public class Graphy {
         }
         return false;
     }
-
-    public void printShortestDistance(int s, int dest)
+    public void dftPrintShortestDistance(int s, int dest)
 	{
 		// predecessor[i] array stores predecessor of
 		// i and distance array stores distance of i
 		// from s
 		int pred[] = new int[numberOfVerticies];
 		int dist[] = new int[numberOfVerticies];
+        int destination[] = new int[2];
+        destination[0] = dest; //I had to wrap the destination in an array so that DFT could manipulate it
+        destination[1] = 0;
 
-		if (DFT(s, (Integer)dest, pred, dist) == false) {
+		if (depthFirstTraversal(s, destination, pred, dist) == false) {
 			System.out.println("Given source and destination are not connected");
 			return;
 		}
@@ -153,7 +155,7 @@ public class Graphy {
 
 		// LinkedList to store path
 		LinkedList<Integer> path = new LinkedList<Integer>();
-		int crawl = destination;
+		int crawl = destination[0];
 		path.add(crawl);
 		while (pred[crawl] != -1) {
 			path.add(pred[crawl]);
@@ -161,13 +163,88 @@ public class Graphy {
 		}
 
 		// Print distance
-		System.out.println("Shortest path length is: " + dist[destination]);
+        System.out.println("Success!");
+		System.out.println("Shortest path length is: " + dist[destination[0]]);
 
 		// Print path
 		System.out.println("Path is ::");
 		for (int i = path.size() - 1; i >= 0; i--) {
 			System.out.print(path.get(i) + " ");
 		}
+        System.out.println("\n" + destination[1] + " verticies were examined in this search.");
+	}
+
+    private boolean bredthFirstTraversal(int src, int dest[], int pred[], int dist[]){
+        int v = numberOfVerticies;
+
+        LinkedList<Integer> queue = new LinkedList<>();
+        for (int i = 0; i<v; i++){
+            if(vertex[i]!=null)
+                vertex[i].setPushed(false);
+            dist[i] = Integer.MAX_VALUE;
+            pred[i] = -1;    
+        }
+                
+        dist[src] = 0;
+        queue.add(src);
+        vertex[src].setPushed(true);
+
+        while(!queue.isEmpty()){
+            v = queue.remove();
+            for (int column = 0; column < numberOfVerticies; column++){ 
+                if(edge[v][column] == 1 && !vertex[column].getPushed()){
+                    queue.add(column);
+                    vertex[column].setPushed(true);
+                    dist[column] = dist[v] + 1;
+                    pred[column] = v;
+                    dest[1] = dest[1] + 1;
+
+                    if(vertex[column].getValue() == dest[0]){
+                        dest[0] = column;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public void bftPrintShortestDistance(int s, int dest)
+	{
+		// predecessor[i] array stores predecessor of
+		// i and distance array stores distance of i
+		// from s
+		int pred[] = new int[numberOfVerticies];
+		int dist[] = new int[numberOfVerticies];
+        int destination[] = new int[2];
+        destination[0] = dest; //I had to wrap the destination in an array so that DFT could manipulate it
+        destination[1] = 0;
+
+		if (bredthFirstTraversal(s, destination, pred, dist) == false) {
+			System.out.println("Given source and destination are not connected");
+            System.out.println("\n" + destination[1] + " verticies were examined in this search.");
+            return;
+		}
+
+
+		// LinkedList to store path
+		LinkedList<Integer> path = new LinkedList<Integer>();
+		int crawl = destination[0];
+		path.add(crawl);
+		while (pred[crawl] != -1) {
+			path.add(pred[crawl]);
+			crawl = pred[crawl];
+		}
+
+		// Print distance
+        System.out.println("Success!");
+		System.out.println("Shortest path length is: " + dist[destination[0]]);
+
+		// Print path
+		System.out.println("Path is ::");
+		for (int i = path.size() - 1; i >= 0; i--) {
+			System.out.print(path.get(i) + " ");
+		}
+        System.out.println("\n" + destination[1] + " verticies were examined in this search.");
 	}
 
     public void printGraph(){
@@ -178,10 +255,4 @@ public class Graphy {
             showEdges(i);
         }
     }
-    /*private void pause(){
-        System.out.print("Press enter to continue...");
-        Scanner scan = new Scanner(System.in);
-        scan.nextLine();
-        scan.close();
-    }*/
 }
