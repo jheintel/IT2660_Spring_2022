@@ -1,10 +1,11 @@
 public class Test {
     public static void main(String[] args) {
         //testGraph();
-        generateRandomGraph();
+        Graphy graph = generateRandomGraph();
+        printGraph(graph);
     }
 
-    public static void generateRandomGraph(){
+    public static Graphy generateRandomGraph(){
         final int GRAPH_SIZE = 1000;
         final int MIN_NODE_VALUE = 0;
         final int MAX_NODE_VALUE = 100000;
@@ -36,16 +37,11 @@ public class Test {
                 }
             }
         }
-
-        for(int i = 0; i < GRAPH_SIZE; i++){
-            System.out.print("Node " + i + "\'s Value is: ");
-            genGraph.showVertex(i);
-            System.out.println("its connections are: ");
-            genGraph.showEdges(i);
-        }
+        
+        return genGraph;
     }
     
-    public static void testGraph(){
+    public static Graphy testGraph(){
         Graphy testGraph = new Graphy(5);
         Node v0 = new Node(0);
         Node v1 = new Node(1);
@@ -68,11 +64,15 @@ public class Test {
         testGraph.insertEdge(4, 0);
         testGraph.insertEdge(4, 3);
 
-        for(int i = 0; i < 5; i++){
+        return testGraph;
+    }
+    
+    public static void printGraph(Graphy graph){
+        for(int i = 0; i < graph.numberOfVerticies; i++){
             System.out.print("Node " + i + "\'s ");
-            testGraph.showVertex(i);
+            graph.showVertex(i);
             System.out.println("its connections are: ");
-            testGraph.showEdges(i);
+            graph.showEdges(i);
         }
     }
 }
