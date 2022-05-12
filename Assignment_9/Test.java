@@ -1,46 +1,11 @@
 public class Test {
     public static void main(String[] args) {
         //testGraph();
-        Graphy graph = generateRandomGraph();
-        printGraph(graph);
+        Graphy graph = Graphy.generateRandomGraph(1000, 1, 100000, 1, 5);
+        graph.printGraph();
+        //graph.DFT_scanAndPrint(1);
     }
 
-    public static Graphy generateRandomGraph(){
-        final int GRAPH_SIZE = 1000;
-        final int MIN_NODE_VALUE = 0;
-        final int MAX_NODE_VALUE = 100000;
-        final int MIN_EDGES = 1;
-        final int MAX_EDGES = 5;
-        Graphy genGraph = new Graphy(GRAPH_SIZE);
-
-        //Generate an array of nodes with random values
-        for(int i = 0; i<GRAPH_SIZE; i++){
-            int nodeValue =  (int)Math.floor(Math.random()*(MAX_NODE_VALUE - MIN_NODE_VALUE +1) +MIN_NODE_VALUE);
-            
-            genGraph.insertVertex(i, new Node(nodeValue));
-        }
-
-        //generate the edges between the nodes
-        for(int i = 0; i<GRAPH_SIZE; i++){
-            int maxEdgeAdj = MAX_EDGES - genGraph.numberOfEdges(i);
-            int addNumberOfEdges = (int)Math.floor(Math.random()*(maxEdgeAdj - MIN_EDGES+1) +MIN_EDGES);
-            int edgeCheckFirstVert = genGraph.numberOfEdges(i);
-            while(addNumberOfEdges>0 && edgeCheckFirstVert<MAX_EDGES){
-                int randomNode = (int)Math.floor(Math.random()*(GRAPH_SIZE-1 - 0 + 1) +0);
-                int edgeCheckSecondVert = genGraph.numberOfEdges(randomNode);
-                if(edgeCheckSecondVert<MAX_EDGES && randomNode != i){
-                    genGraph.insertEdge(i, randomNode);
-                    addNumberOfEdges--;
-                }
-                else{
-                    addNumberOfEdges--;
-                }
-            }
-        }
-        
-        return genGraph;
-    }
-    
     public static Graphy testGraph(){
         Graphy testGraph = new Graphy(5);
         Node v0 = new Node(0);
@@ -65,14 +30,5 @@ public class Test {
         testGraph.insertEdge(4, 3);
 
         return testGraph;
-    }
-    
-    public static void printGraph(Graphy graph){
-        for(int i = 0; i < graph.numberOfVerticies; i++){
-            System.out.print("Node " + i + "\'s ");
-            graph.showVertex(i);
-            System.out.println("its connections are: ");
-            graph.showEdges(i);
-        }
     }
 }
