@@ -23,7 +23,7 @@ public class Node {
         System.out.println("Node " + value);
     }
     public void print(Node n){
-        System.out.print("Node " + value);
+        System.out.print(value);
     }
     public void visit(){
         print(this);
