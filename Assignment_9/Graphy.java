@@ -1,6 +1,5 @@
 import java.util.Stack;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class Graphy {
     Node vertex[];
@@ -102,7 +101,7 @@ public class Graphy {
             }
         }
     }
-    private boolean depthFirstTraversal(int src, int dest[], int pred[], int dist[]){
+    private boolean depthFirstTraversal(int src, int destination[], int pred[], int dist[]){
         int v = numberOfVerticies;
 
         Stack<Integer> stack = new Stack<>();
@@ -113,9 +112,17 @@ public class Graphy {
             pred[i] = -1;    
         }
                 
+
+        
         dist[src] = 0;
         stack.push(src);
         vertex[src].setPushed(true);
+
+        destination[1] = destination[1] + 1;
+        if(vertex[src].getValue() == destination[0]){
+            destination[0] = 0;
+            return true;
+        }
 
         while(!stack.empty()){
             v = stack.pop();
@@ -125,10 +132,10 @@ public class Graphy {
                     vertex[column].setPushed(true);
                     dist[column] = dist[v] + 1;
                     pred[column] = v;
-                    dest[1] = dest[1] + 1;
+                    destination[1] = destination[1] + 1;
 
-                    if(vertex[column].getValue() == dest[0]){
-                        dest[0] = column;
+                    if(vertex[column].getValue() == destination[0]){
+                        destination[0] = column;
                         return true;
                     }
                 }
@@ -138,7 +145,7 @@ public class Graphy {
     }
     public void dftPrintShortestDistance(int s, int dest)
 	{
-		// predecessor[i] array stores predecessor of
+        // predecessor[i] array stores predecessor of
 		// i and distance array stores distance of i
 		// from s
 		int pred[] = new int[numberOfVerticies];
@@ -148,7 +155,8 @@ public class Graphy {
         destination[1] = 0;
 
 		if (depthFirstTraversal(s, destination, pred, dist) == false) {
-			System.out.println("Given source and destination are not connected");
+			System.out.println("Source and given destination are not connected\n");
+            System.out.println("--- " + destination[1] + " verticies were examined in this search. ---\n");
 			return;
 		}
 
@@ -174,7 +182,7 @@ public class Graphy {
         System.out.println("\n" + destination[1] + " verticies were examined in this search.");
 	}
 
-    private boolean bredthFirstTraversal(int src, int dest[], int pred[], int dist[]){
+    private boolean bredthFirstTraversal(int src, int destination[], int pred[], int dist[]){
         int v = numberOfVerticies;
 
         LinkedList<Integer> queue = new LinkedList<>();
@@ -189,6 +197,12 @@ public class Graphy {
         queue.add(src);
         vertex[src].setPushed(true);
 
+
+        destination[1] = destination[1] + 1;
+        if(vertex[src].getValue() == destination[0]){
+            destination[0] = 0;
+            return true;
+        }
         while(!queue.isEmpty()){
             v = queue.remove();
             for (int column = 0; column < numberOfVerticies; column++){ 
@@ -197,10 +211,10 @@ public class Graphy {
                     vertex[column].setPushed(true);
                     dist[column] = dist[v] + 1;
                     pred[column] = v;
-                    dest[1] = dest[1] + 1;
+                    destination[1] = destination[1] + 1;
 
-                    if(vertex[column].getValue() == dest[0]){
-                        dest[0] = column;
+                    if(vertex[column].getValue() == destination[0]){
+                        destination[0] = column;
                         return true;
                     }
                 }
